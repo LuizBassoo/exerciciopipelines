@@ -1,23 +1,28 @@
-name: Deploy no Netlify
+name: Pipeline do Netlify
 
 on:
-  push:
-    branches:
-      - master  # ou 'master' se for o nome da sua branch principal
+push:
+branches: [ master ]
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+deploy:
+name: Deploy do Site no Netlify
+runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
+steps:
+- name: Checkout do repositório
+uses: actions/checkout@v4
 
-      - name: Instalar o CLI do Netlify
-        run: npm install -g netlify-cli
+- name: Setup do Node.js para Netlify CLI
+uses: actions/setup-node@v4
+with:
+node-version: '18'
 
-      - name: Fazer deploy no Netlify
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: |
-          netlify deploy --prod --dir=. --site=$NETLIFY_SITE_ID
+- name: Instala o Netlify CLI
+run: npm install -g netlify-cli
+
+- name: Atualiza site na Netlify
+env:
+NETLIFY_AUTH_TOKEN: $｛｛ secrets.NETLIFY_AUTH_TOKEN ｝｝
+NETLIFY_SITE_ID: $｛｛ secrets.NETLIFY_SITE_ID ｝｝
+run: netlify deploy --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN --dir="." --prod
