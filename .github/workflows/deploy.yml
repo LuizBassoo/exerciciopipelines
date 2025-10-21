@@ -3,7 +3,7 @@ name: Deploy no Netlify
 on:
   push:
     branches:
-      - main  # ou 'master' se for o nome da sua branch principal
+      - master  # ou 'master' se for o nome da sua branch principal
 
 jobs:
   build-and-deploy:
